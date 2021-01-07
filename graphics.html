@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module graphics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>graphics</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/jupyter-langm%40rhodes.edu/cs1-libraries/cs1/graphics.py">/home/jupyter-langm@rhodes.edu/cs1-libraries/cs1/graphics.py</a></font></td></tr></table>
+    <p><tt>Simple&nbsp;graphics&nbsp;library&nbsp;for&nbsp;COMP141:&nbsp;Computer&nbsp;Science&nbsp;I</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="IPython.display.html">IPython.display</a><br>
+</td><td width="25%" valign=top><a href="ipywidgets.html">ipywidgets</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"> <dl><dt><a name="-clear_canvas"><strong>clear_canvas</strong></a>()</dt><dd><tt>Clears&nbsp;the&nbsp;canvas&nbsp;of&nbsp;all&nbsp;shapes&nbsp;and&nbsp;text.</tt></dd></dl>
+ <dl><dt><a name="-draw_circle"><strong>draw_circle</strong></a>(centerx, centery, radius)</dt><dd><tt>Draws&nbsp;a&nbsp;circle&nbsp;on&nbsp;the&nbsp;canvas.</tt></dd></dl>
+ <dl><dt><a name="-draw_filled_circle"><strong>draw_filled_circle</strong></a>(centerx, centery, radius)</dt><dd><tt>Draws&nbsp;a&nbsp;filled&nbsp;circle&nbsp;on&nbsp;the&nbsp;canvas.</tt></dd></dl>
+ <dl><dt><a name="-draw_filled_oval"><strong>draw_filled_oval</strong></a>(centerx, centery, radiusx, radiusy)</dt><dd><tt>Draws&nbsp;a&nbsp;filled&nbsp;oval&nbsp;on&nbsp;the&nbsp;canvas.</tt></dd></dl>
+ <dl><dt><a name="-draw_filled_polygon"><strong>draw_filled_polygon</strong></a>(*points)</dt><dd><tt>Draws&nbsp;a&nbsp;filled&nbsp;polygon&nbsp;on&nbsp;the&nbsp;canvas.&nbsp;&nbsp;The&nbsp;points&nbsp;of&nbsp;the&nbsp;polygon&nbsp;are&nbsp;(x,y)&nbsp;pairs<br>
+specified&nbsp;as&nbsp;one&nbsp;big&nbsp;list.&nbsp;&nbsp;E.g.:&nbsp;<a href="#-draw_polygon">draw_polygon</a>(10,&nbsp;10,&nbsp;20,&nbsp;20,&nbsp;30,&nbsp;40)&nbsp;draws&nbsp;a<br>
+polygon&nbsp;bounded&nbsp;by&nbsp;(10,&nbsp;10)&nbsp;to&nbsp;(20,&nbsp;20)&nbsp;to&nbsp;(30,&nbsp;40)&nbsp;to&nbsp;(10,&nbsp;10).</tt></dd></dl>
+ <dl><dt><a name="-draw_filled_rect"><strong>draw_filled_rect</strong></a>(x, y, width, height)</dt><dd><tt>Draws&nbsp;a&nbsp;filled&nbsp;rectangle&nbsp;on&nbsp;the&nbsp;canvas.&nbsp;Upper&nbsp;left&nbsp;corner&nbsp;at&nbsp;(x,&nbsp;y),&nbsp;width&nbsp;and&nbsp;height&nbsp;as&nbsp;given.</tt></dd></dl>
+ <dl><dt><a name="-draw_line"><strong>draw_line</strong></a>(x1, y1, x2, y2)</dt><dd><tt>Draws&nbsp;a&nbsp;line&nbsp;on&nbsp;the&nbsp;canvas&nbsp;from&nbsp;(x1,&nbsp;y1)&nbsp;to&nbsp;(x2,&nbsp;y2).</tt></dd></dl>
+ <dl><dt><a name="-draw_oval"><strong>draw_oval</strong></a>(centerx, centery, radiusx, radiusy)</dt><dd><tt>Draws&nbsp;an&nbsp;oval&nbsp;on&nbsp;the&nbsp;canvas.</tt></dd></dl>
+ <dl><dt><a name="-draw_polygon"><strong>draw_polygon</strong></a>(*points)</dt><dd><tt>Draws&nbsp;a&nbsp;polygon&nbsp;on&nbsp;the&nbsp;canvas.&nbsp;&nbsp;The&nbsp;points&nbsp;of&nbsp;the&nbsp;polygon&nbsp;are&nbsp;(x,y)&nbsp;pairs<br>
+specified&nbsp;as&nbsp;one&nbsp;big&nbsp;list.&nbsp;&nbsp;E.g.:&nbsp;<a href="#-draw_polygon">draw_polygon</a>(10,&nbsp;10,&nbsp;20,&nbsp;20,&nbsp;30,&nbsp;40)&nbsp;draws&nbsp;a<br>
+polygon&nbsp;bounded&nbsp;by&nbsp;(10,&nbsp;10)&nbsp;to&nbsp;(20,&nbsp;20)&nbsp;to&nbsp;(30,&nbsp;40)&nbsp;to&nbsp;(10,&nbsp;10).</tt></dd></dl>
+ <dl><dt><a name="-draw_polyline"><strong>draw_polyline</strong></a>(*points)</dt><dd><tt>Draws&nbsp;a&nbsp;polyline&nbsp;on&nbsp;the&nbsp;canvas.&nbsp;&nbsp;The&nbsp;points&nbsp;of&nbsp;the&nbsp;polyline&nbsp;are&nbsp;(x,y)&nbsp;pairs<br>
+specified&nbsp;as&nbsp;one&nbsp;big&nbsp;list.&nbsp;&nbsp;E.g.:&nbsp;<a href="#-draw_polyline">draw_polyline</a>(10,&nbsp;10,&nbsp;20,&nbsp;20,&nbsp;30,&nbsp;40)&nbsp;draws&nbsp;a<br>
+line&nbsp;from&nbsp;(10,&nbsp;10)&nbsp;to&nbsp;(20,&nbsp;20)&nbsp;to&nbsp;(30,&nbsp;40).</tt></dd></dl>
+ <dl><dt><a name="-draw_rect"><strong>draw_rect</strong></a>(x, y, width, height)</dt><dd><tt>Draws&nbsp;a&nbsp;rectangle&nbsp;on&nbsp;the&nbsp;canvas.&nbsp;Upper&nbsp;left&nbsp;corner&nbsp;at&nbsp;(x,&nbsp;y),&nbsp;width&nbsp;and&nbsp;height&nbsp;as&nbsp;given.</tt></dd></dl>
+ <dl><dt><a name="-draw_string"><strong>draw_string</strong></a>(message, x, y, textSize)</dt><dd><tt>Draws&nbsp;the&nbsp;message&nbsp;at&nbsp;the&nbsp;given&nbsp;location&nbsp;[(x,&nbsp;y)&nbsp;will&nbsp;be&nbsp;where&nbsp;the<br>
+midpoint&nbsp;of&nbsp;the&nbsp;string&nbsp;ends&nbsp;up]&nbsp;with&nbsp;the&nbsp;given&nbsp;font&nbsp;size&nbsp;in&nbsp;points.</tt></dd></dl>
+ <dl><dt><a name="-get_canvas"><strong>get_canvas</strong></a>()</dt></dl>
+ <dl><dt><a name="-open_canvas"><strong>open_canvas</strong></a>(width, height)</dt><dd><tt>Creates&nbsp;a&nbsp;window&nbsp;for&nbsp;painting&nbsp;of&nbsp;a&nbsp;given&nbsp;width&nbsp;and&nbsp;height.</tt></dd></dl>
+ <dl><dt><a name="-save_canvas_as_image"><strong>save_canvas_as_image</strong></a>(filename)</dt><dd><tt>Saves&nbsp;the&nbsp;image&nbsp;to&nbsp;the&nbsp;supplied&nbsp;filename,&nbsp;which&nbsp;must&nbsp;end&nbsp;in&nbsp;.ps&nbsp;or&nbsp;.eps</tt></dd></dl>
+ <dl><dt><a name="-set_background_color"><strong>set_background_color</strong></a>(color)</dt><dd><tt>Sets&nbsp;the&nbsp;background&nbsp;color&nbsp;of&nbsp;the&nbsp;canvas.&nbsp;&nbsp;Can&nbsp;be&nbsp;called&nbsp;at&nbsp;any&nbsp;time&nbsp;and&nbsp;the&nbsp;color&nbsp;will<br>
+instantly&nbsp;change.</tt></dd></dl>
+ <dl><dt><a name="-set_background_color_rgb"><strong>set_background_color_rgb</strong></a>(r, g, b)</dt><dd><tt>Sets&nbsp;the&nbsp;background&nbsp;color&nbsp;of&nbsp;the&nbsp;canvas.&nbsp;&nbsp;Can&nbsp;be&nbsp;called&nbsp;at&nbsp;any&nbsp;time&nbsp;and&nbsp;the&nbsp;color&nbsp;will<br>
+instantly&nbsp;change.</tt></dd></dl>
+ <dl><dt><a name="-set_color"><strong>set_color</strong></a>(color)</dt><dd><tt>Sets&nbsp;the&nbsp;current&nbsp;painting&nbsp;color.</tt></dd></dl>
+ <dl><dt><a name="-set_color_rgb"><strong>set_color_rgb</strong></a>(r, g, b)</dt><dd><tt>Sets&nbsp;the&nbsp;current&nbsp;painting&nbsp;color.</tt></dd></dl>
+ <dl><dt><a name="-set_line_thickness"><strong>set_line_thickness</strong></a>(thickness)</dt><dd><tt>Sets&nbsp;the&nbsp;canvas&nbsp;painting&nbsp;line&nbsp;width&nbsp;to&nbsp;the&nbsp;value&nbsp;given.</tt></dd></dl>
+</td></tr></table>
+</body></html>
