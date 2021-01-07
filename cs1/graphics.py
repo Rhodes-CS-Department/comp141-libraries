@@ -8,8 +8,6 @@ from threading import Lock
 import ipywidgets as widgets
 import IPython.display as disp
 
-from ipyevents import Event
-
 from ipycanvas import MultiCanvas
 
 _canvas = None
