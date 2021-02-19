@@ -5,6 +5,9 @@ Simple graphics library for COMP141: Computer Science I
 from time import time, sleep
 from threading import Lock
 
+from jupyter_ui_poll import ui_events
+from ipyevents import Event
+
 import ipywidgets as widgets
 import IPython.display as disp
 
@@ -13,7 +16,14 @@ from ipycanvas import MultiCanvas
 _canvas = None
 _fg = None
 _bg = None
-_interaction = None
+
+_events = None
+_click_coords = None
+_last_mouse_ts = None
+
+_out = None
+
+_DRAW_BORDER = True
 
 # Global functionality
 
@@ -22,16 +32,50 @@ def _check():
   if _canvas == None:
     raise RuntimeError("Canvas is not open yet.")
 
+def _handle_event(event):
+  global _click_coords, _last_mouse_ts
+  typ = event['type']
+  if typ != 'click':
+    return
+  _click_coords = (event['offsetX'], event['offsetY'])
+  _last_mouse_ts = time()
+
 def open_canvas(width, height):
   """Creates a window for painting of a given width and height."""
-  global _canvas, _bg, _fg, _interaction
-  _canvas = MultiCanvas(3, width=width, height=height)
+  global _canvas, _bg, _fg, _events, _out
+  _canvas = MultiCanvas(2, width=width, height=height)
   _bg = _canvas[0]
   _fg = _canvas[1]
-  _interaction = _canvas[2]
-  #disp.display(_canvas)
-  disp.display(widgets.AppLayout(center=_canvas))
-  
+
+  _out = widgets.AppLayout(center=_canvas)
+  disp.display(_out)
+
+  # Register event listeners, and ignore drag events on the canvas.
+  _ = Event(source=_out, watched_events=['dragstart'],
+          prevent_default_action=True)
+  _events = Event(source=_out, watched_events=['click'])
+  _events.on_dom_event(_handle_event)
+
+  if _DRAW_BORDER:
+    # Draw a thin border to stand out from background.
+    draw_rect(0, 0, width, height)
+
+def wait_for_mouse_click():
+  global _last_mouse_ts
+  now = time()
+  with ui_events() as ui_poll:
+    while True:
+      ui_poll(20)
+      if _last_mouse_ts and _last_mouse_ts > now:
+        return
+      sleep(0.05)
+
+def get_mouse_click_x():
+  return _click_coords[0]
+
+def get_mouse_click_y():
+  return _click_coords[1]
+
 def get_canvas():
   global _canvas
   return _canvas
