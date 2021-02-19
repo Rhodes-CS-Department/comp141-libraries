@@ -16,7 +16,6 @@ from ipycanvas import MultiCanvas
 _canvas = None
 _fg = None
 _bg = None
-_handle = None
 
 _events = None
 _click_coords = None
@@ -41,7 +40,7 @@ def _handle_event(event):
 
 def open_canvas(width, height):
   """Creates a window for painting of a given width and height."""
-  global _canvas, _bg, _fg, _handle, _events, _out
+  global _canvas, _bg, _fg, _events, _out
   _canvas = MultiCanvas(2, width=width, height=height)
   _bg = _canvas[0]
   _fg = _canvas[1]
@@ -55,7 +54,7 @@ def open_canvas(width, height):
   _events.on_dom_event(_handle_event)
 
 def wait_for_mouse_click():
-  global _handle, _last_mouse_ts
+  global _last_mouse_ts
   now = time()
   with ui_events() as ui_poll:
     while True:
