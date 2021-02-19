@@ -23,6 +23,8 @@ _last_mouse_ts = None
 
 _out = None
 
+_DRAW_BORDER = True
+
 # Global functionality
 
 def _check():
@@ -48,10 +50,15 @@ def open_canvas(width, height):
   _out = widgets.AppLayout(center=_canvas)
   disp.display(_out)
 
+  # Register event listeners, and ignore drag events on the canvas.
   _ = Event(source=_out, watched_events=['dragstart'],
           prevent_default_action=True)
   _events = Event(source=_out, watched_events=['click'])
   _events.on_dom_event(_handle_event)
+
+  if _DRAW_BORDER:
+    # Draw a thin border to stand out from background.
+    draw_rect(0, 0, width, height)
 
 def wait_for_mouse_click():
   global _last_mouse_ts
