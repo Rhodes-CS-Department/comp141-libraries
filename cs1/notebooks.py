@@ -6,7 +6,6 @@ import ast
 import builtins
 import os
 import sys
-import types
 
 from client.api.notebook import Notebook
 from IPython.display import display, Markdown, Latex
@@ -115,7 +114,7 @@ _BYTE_LIMIT = 100_000_000 # ~100MB
 
 def open(*args):
     f = builtins.open(*args)
-    return _LimitedFile(f, 2_000)
+    return _LimitedFile(f, _BYTE_LIMIT)
 
 class FileSizeException(Exception):
     pass
