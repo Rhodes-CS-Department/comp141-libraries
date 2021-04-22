@@ -3,8 +3,10 @@ on the rhodes-notebook.org environment.
 """
 
 import ast
-import types
+import builtins
+import os
 import sys
+
 from client.api.notebook import Notebook
 from IPython.display import display, Markdown, Latex
 
@@ -108,3 +110,59 @@ def reload_functions(filename, verbose=False):
     obj = compile(p, filename=filename, mode="exec")
     exec(obj, sys.modules["__main__"].__dict__)
     
+_BYTE_LIMIT = 100_000_000 # ~100MB
+
+def open(*args):
+    f = builtins.open(*args)
+    return _LimitedFile(f, _BYTE_LIMIT)
+
+class FileSizeException(Exception):
+    pass
+
+class _LimitedFile(object):
+    """A byte-limited file object.
+    
+    Behaves exactly like File, except for write. All functions delegated to the file supplied
+    in the constructor via delegating __getattr__ and __iter__.  Supports `with` using 
+    __enter__ and __exit__.
+    """
+    
+    def __init__(self, f, byte_limit):
+        """Create a LimitedFile
+        
+        Args:
+            f: file object to wrap.
+            byte_limit: total bytes that may be written to file (including existing size).
+        """
+        self.file = f
+        self.byte_count = os.path.getsize(f.name)
+        self.byte_limit = byte_limit
+        
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, *args, **kwargs):
+        exit = getattr(self.file, '__exit__', None)
+        if exit:
+            return exit(*args, **kwargs)
+        else:
+            exit = getattr(self.file, 'close', None)
+            if exit:
+                exit()
+                
+    def __getattr__(self, attr):
+        return getattr(self.file, attr)
+    
+    def __iter__(self):
+        return iter(self.file)
+        
+    def write(self, obj):
+        assert isinstance(obj, str), "Cannot write {} (must be string)".format(type(obj))
+        size = len(obj.encode('utf-8')) # TODO: this could be optimized. string is encoded twice.
+        
+        if self.byte_limit > 0 and self.byte_count + size > self.byte_limit:
+            raise FileSizeException(
+                "Writing would exceed max file size of 100MB ({})".format(self.byte_count+size))
+            
+        self.byte_count += size
+        self.file.write(obj)
