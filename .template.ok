@@ -1,0 +1,16 @@
+{
+  "name": "Program 08",
+  "endpoint": "<#endpoint#>/project08",
+  "src": [
+    "P8.ipynb",
+    "imgfilter.py"
+  ],
+  "tests": {
+      "tests/q*.py": "ok_test"
+  },
+  "protocols": [
+      "file_contents",
+      "grading",
+      "backup"
+  ]
+}

@@ -4,8 +4,10 @@ on the rhodes-notebook.org environment.
 
 import ast
 import builtins
+import json
 import os
 import sys
+import urllib
 
 from client.api.notebook import Notebook
 from IPython.display import display, Markdown, Latex
@@ -13,6 +15,80 @@ from IPython.display import display, Markdown, Latex
 # The ok control variable.
 _ok = None
 
+# Configs for rewriting ok files.
+_OPTIONS_URL = 'https://storage.googleapis.com/comp141-public/options.json'
+_OPTIONS_FNAME = '.options'
+_TEMPLATE_FNAME = '.template.ok'
+_EP_FNAME = '.141_endpoint'
+_EP_PLACEHOLDER = '<#endpoint#>'
+
+def _get_endpoints_file(fname):
+    """Returns prof->endpoint map from file, or None."""
+    try:
+        data = json.load(open(fname))
+    except:
+        return None
+    return data
+
+def _get_endpoints_url(url):
+    """Returns prof->endpoint map from url, or None."""
+    try:
+        data = json.load(urllib.request.urlopen(url))
+    except Exception as e:
+        return None
+    return data
+
+def _get_endpoints():
+    """Returns prof->endpoint map from file or url or raises runtime exception."""
+    ep = _get_endpoints_file(_OPTIONS_FNAME)
+    if not ep:
+        ep = _get_endpoints_url(_OPTIONS_URL)
+    if not ep:
+        raise Exception('No endpoint options loaded, contact your professor.')
+    return ep
+
+def _rewrite_template(fname, endpoint):
+    """Writes the given ok file from a template.
+    
+    Replaces any placeholder with the given endpoint.
+    """
+    if not os.path.isfile(_TEMPLATE_FNAME):
+        raise Exception("no template file!")
+    ok_contents = open(_TEMPLATE_FNAME).read()
+    ok_contents = ok_contents.replace(_EP_PLACEHOLDER, endpoint)
+    out = open(fname, "w")
+    out.write(ok_contents)
+    out.close()
+
+def _validate_or_create(fname):
+    """Validates the existence of .ok file, or creates it.
+    
+    First checks whether the file exists. If so, nothing is done.
+    If the file doesn't exist, an endpoint file in the user's home is looked
+    for. If found, a template ok file is re-written with the endpoint.
+    If the endpoint does not exist, the user is prompted to chose from a list
+    of endpoints, and the chosen endpoint is cached before the file is written.
+    """
+    if os.path.isfile(fname):
+        return
+    ep_file = os.path.join(os.path.expanduser("~"), _EP_FNAME)
+    if os.path.isfile(ep_file):
+        ep = open(ep_file).read()
+    else:
+        opts = _get_endpoints()
+        print("Select a class:")
+        ii = dict()
+        for i, cls in enumerate(opts):
+            print("\t", i, ". ", cls, sep="")
+            ii[i] = cls
+        choice = int(input())
+        if choice not in ii:
+            raise Exception("invalid choice")
+        ep = opts[ii[choice]]
+        out = open(ep_file, 'w')
+        out.write(ep)
+        out.close()
+    _rewrite_template(fname, ep)
 
 def _maybe_login(okfile):
     """Authenticate to OK, if necessary."""
@@ -24,6 +100,7 @@ def _force_login(okfile):
     """Authenticate to OK, even if we are already logged in."""
     global _ok
     _ok = None
+    _validate_or_create(okfile)
     _ok = Notebook(okfile)
     _ok.auth(inline=True)
 
