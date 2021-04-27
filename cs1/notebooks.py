@@ -16,6 +16,17 @@ from IPython.display import display, Markdown, Latex
 _ok = None
 
 # Configs for rewriting ok files.
+# If an ok file is not found during at attempted load, a template can be
+# used to generate one. This allows for different endpoints for the same
+# general ok config without modifying the okpy library.
+# The user is presented with the option of choosing a professor (and associated
+# endpoint), which are loaded either from a config file in the filesystem,
+# or from a url.
+# Endpoint options should be a JSON-encoded map. e.g.,
+# {
+#  "Lang": "rhodes/comp141-01/sp21",
+#  "Kirlin": "rhodes/comp141-02/sp21"
+# }
 _OPTIONS_URL = 'https://storage.googleapis.com/comp141-public/options.json'
 _OPTIONS_FNAME = '.options'
 _TEMPLATE_FNAME = '.template.ok'
