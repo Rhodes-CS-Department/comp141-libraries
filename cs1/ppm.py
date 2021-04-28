@@ -1,44 +1,22 @@
-from PIL import Image, ImageDraw, ImageFont, ImageColor
+from PIL import Image
 import IPython.display as disp
 
 def get_ppm(filename):
-    f = open(filename, 'r')
-    colo = f.readline().splitlines()
-    x, y = f.readline().split()
-    x, y = int(x), int(y)
-    m = f.readline().splitlines()
-    lines = f.read().splitlines()
-
-    im = Image.new('RGB', (x, y))
-
-    for yi in range(y):
-        l = lines[yi]
-        d = [int(t) for t in l.split()]
-        for xi in range(x):
-            off = xi*3
-            im.putpixel((xi, yi), (int(d[off]), int(d[off+1]), int(d[off+2])))
-
-    return im
+    return _faster_ppm(filename)
 
 def display_ppm(filename):
     disp.display(get_ppm(filename))
 
-def fast_ppm(filename):
-    f = open(filename, 'r')
-    colo = f.readline().splitlines()
-    x, y = f.readline().split()
-    x, y = int(x), int(y)
-    m = f.readline().splitlines()
-    lines = f.read().splitlines()
-
-    im = Image.new('RGB', (x, y))
-    dr = ImageDraw.Draw(im, 'RGB')
-
-    for yi in range(y):
-        l = lines[yi]
-        d = [int(t) for t in l.split()]
-        for xi in range(x):
-            off = xi*3
-            dr.point((xi, yi), (int(d[off]), int(d[off+1]), int(d[off+2])))
-    
-    disp.display(im)
+def _faster_ppm(filename):
+    with open(filename, 'r') as ppm:
+        s = ppm.read()
+        s = s.split()
+        x, y = int(s[1]), int(s[2])
+        s = s[4:] 
+        if len(s) != x * y * 3:
+            raise Exception(
+                "Incorrect image dimensions, expected {} ({} x {} x 3) RGB values, read {}".format(
+                    x*y*3, x, y, len(s)))
+        byt = bytes([int(v) for v in s])
+        im = Image.frombytes('RGB', (x, y), byt, "raw")
+        return im
