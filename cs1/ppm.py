@@ -1,10 +1,6 @@
 from PIL import Image
 import IPython.display as disp
 
-import re
-
-_LINE_RE = '^((\d{1,3})\s+){n}$'
-
 def get_ppm(filename):
     return _faster_ppm(filename)
 
