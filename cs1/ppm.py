@@ -26,7 +26,8 @@ def _validate_ppm(filename):
             raise Exception('Expected 255 for color depth, read {}'.format(colo))
         
         # validate contents
-        for i, line in enumerate(ppm):
+        i = 0
+        for line in ppm:
             vals = line.split()
             # validate x dimension
             if len(vals) != x*3:
@@ -37,9 +38,10 @@ def _validate_ppm(filename):
                 if not v.isdigit() or not (0 <= int(v) < 256):
                     raise Exception('Value {} on line {} is not a color value'.format(
                         v, i))
+            i += 1
         # validate y dimension
-        if i+1 != y:
-            raise Exception('Expected {} lines, read {}'.format(y, i+1))
+        if i != y:
+            raise Exception('Expected {} lines, read {}'.format(y, i))
             
 class InvalidImageException(Exception):
     pass
