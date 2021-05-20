@@ -71,7 +71,7 @@ def _rewrite_template(fname, endpoint):
     out.write(ok_contents)
     out.close()
 
-def _validate_or_create(fname):
+def _validate_or_create(fname, ignore_cache):
     """Validates the existence of .ok file, or creates it.
     
     First checks whether the file exists. If so, nothing is done.
@@ -80,10 +80,10 @@ def _validate_or_create(fname):
     If the endpoint does not exist, the user is prompted to chose from a list
     of endpoints, and the chosen endpoint is cached before the file is written.
     """
-    if os.path.isfile(fname):
+    if os.path.isfile(fname) and not ignore_cache:
         return
     ep_file = os.path.join(os.path.expanduser("~"), _EP_FNAME)
-    if os.path.isfile(ep_file):
+    if os.path.isfile(ep_file) and not ignore_cache:
         ep = open(ep_file).read()
     else:
         opts = _get_endpoints()
@@ -105,26 +105,27 @@ def _maybe_login(okfile):
     """Authenticate to OK, if necessary."""
     global _ok
     if not _ok:
-        _force_login(okfile)
+        _force_login(okfile, ignore_cache=False)
         
-def _force_login(okfile):
+def _force_login(okfile, ignore_cache):
     """Authenticate to OK, even if we are already logged in."""
     global _ok
     _ok = None
-    _validate_or_create(okfile)
+    _validate_or_create(okfile, ignore_cache)
     _ok = Notebook(okfile)
     _ok.auth(inline=True)
 
-def ok_login(okfile):
+def ok_login(okfile, ignore_cache=False):
     """Authenticate to the OK submission website.
     This is a wrapper around creating a Notebook object and calling auth().
     Will re-authenticate even if we are already logged in.
     
     okfile: the .ok file that describes the OK assignment we are using.
+    ignore_cache: whether to ignore .ok files and endpoint selection.
     """
     
     global _ok
-    _force_login(okfile)
+    _force_login(okfile, ignore_cache)
     
 def ok_runtests(okfile, question):
     """Run test cases and grade them using OK.
