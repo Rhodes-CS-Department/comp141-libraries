@@ -105,27 +105,27 @@ def _maybe_login(okfile):
     """Authenticate to OK, if necessary."""
     global _ok
     if not _ok:
-        _force_login(okfile, ignore_cache=False)
+        _force_login(okfile, ignore_cache=False, ok_force=False, ok_inline=True)
         
-def _force_login(okfile, ignore_cache):
+def _force_login(okfile, ignore_cache, ok_force, ok_inline):
     """Authenticate to OK, even if we are already logged in."""
     global _ok
     _ok = None
     _validate_or_create(okfile, ignore_cache)
     _ok = Notebook(okfile)
-    _ok.auth(inline=True)
+    _ok.auth(inline=ok_inline, force=ok_force)
 
-def ok_login(okfile, ignore_cache=False):
+def ok_login(okfile, ignore_cache=False, ok_force=False, ok_inline=True):
     """Authenticate to the OK submission website.
     This is a wrapper around creating a Notebook object and calling auth().
     Will re-authenticate even if we are already logged in.
     
     okfile: the .ok file that describes the OK assignment we are using.
     ignore_cache: whether to ignore .ok files and endpoint selection.
+    ok_force: force parameter to Notebook.auth
+    ok_inline: inline parameter to Notebook.auth
     """
-    
-    global _ok
-    _force_login(okfile, ignore_cache)
+    _force_login(okfile, ignore_cache, ok_force, ok_inline)
     
 def ok_runtests(okfile, question):
     """Run test cases and grade them using OK.
