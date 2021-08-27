@@ -32,6 +32,7 @@ _OPTIONS_FNAME = '.options'
 _TEMPLATE_FNAME = '.template.ok'
 _EP_FNAME = '.141_endpoint'
 _EP_PLACEHOLDER = '<#endpoint#>'
+_OK_REFRESH_TOKEN_PATH = '.config/ok/auth_refresh'
 
 def _get_endpoints_file(fname):
     """Returns prof->endpoint map from file, or None."""
@@ -125,7 +126,7 @@ def ok_login(okfile, ignore_cache=False, ok_force=False, ok_inline=True):
     ok_force: force parameter to Notebook.auth
     ok_inline: inline parameter to Notebook.auth
     """
-    if not os.path.isfile(os.path.join(os.path.expanduser("~"), ".config/ok/auth_refresh")):
+    if not os.path.isfile(os.path.join(os.path.expanduser("~"), _OK_REFRESH_TOKEN_PATH)):
         ok_force = True
     _force_login(okfile, ignore_cache, ok_force, ok_inline)
     
