@@ -125,6 +125,8 @@ def ok_login(okfile, ignore_cache=False, ok_force=False, ok_inline=True):
     ok_force: force parameter to Notebook.auth
     ok_inline: inline parameter to Notebook.auth
     """
+    if not os.path.isfile(os.path.join(os.path.expanduser("-"), ".config/ok/auth_refresh")):
+        ok_force = True
     _force_login(okfile, ignore_cache, ok_force, ok_inline)
     
 def ok_runtests(okfile, question):
