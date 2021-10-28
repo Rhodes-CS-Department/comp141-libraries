@@ -2,8 +2,12 @@
 Simple graphics library for COMP141: Computer Science I
 """
 
+from tempfile import gettempdir
 from time import time, sleep
 from threading import Lock
+from uuid import uuid1
+
+import os
 
 from jupyter_ui_poll import ui_events
 from ipyevents import Event
@@ -44,6 +48,7 @@ def open_canvas(width, height):
   """Creates a window for painting of a given width and height."""
   global _canvas, _bg, _fg, _events, _out
   _canvas = MultiCanvas(2, width=width, height=height)
+  _canvas.sync_image_data = True
   _bg = _canvas[0]
   _fg = _canvas[1]
 
@@ -220,7 +225,20 @@ def draw_string(message, x, y, textSize):
 
 def save_canvas_as_image(filename):
   """Saves the image to the supplied filename, which must end in .ps or .eps"""
-  global _fg
+  global _canvas
   _check()
-  _fg.to_file(filename)
+  _canvas.to_file(filename)
   
+
+def checkpoint():
+  """Displays a checkpoint of the canvas as the output to the current cell."""
+  global _canvas
+  _check()
+  tname = os.path.join(gettempdir(), '.' + uuid1().hex + '.png')
+  save_canvas_as_image(tname)
+  img = disp.Image(filename=tname)
+  disp.display(img)
+  try:
+    os.remove(tname)
+  except:
+    pass # swallow any error.
