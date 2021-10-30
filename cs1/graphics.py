@@ -47,8 +47,11 @@ def _handle_event(event):
 def open_canvas(width, height):
   """Creates a window for painting of a given width and height."""
   global _canvas, _bg, _fg, _events, _out
-  _canvas = MultiCanvas(2, width=width, height=height)
-  _canvas.sync_image_data = True
+  _canvas = MultiCanvas(
+      n_canvases=2, width=width, height=height,
+      sync_image_data=True)
+  for c in _canvas:
+    c.sync_image_data = True
   _bg = _canvas[0]
   _fg = _canvas[1]
 
