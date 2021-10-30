@@ -230,7 +230,7 @@ def save_canvas_as_image(filename):
   _canvas.to_file(filename)
   
 
-def checkpoint():
+def checkpoint_canvas():
   """Displays a checkpoint of the canvas as the output to the current cell."""
   global _canvas
   _check()
