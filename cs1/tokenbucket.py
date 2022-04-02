@@ -12,6 +12,7 @@ class TokenBucket:
     def consume(self):
         if (self.bucket < 1):
             time.wait(self.time_unit / self.tokens)
+            self.bucket = self.bucket + 1
 
         if (self.bucket > self.tokens):
             self.bucket = self.tokens
