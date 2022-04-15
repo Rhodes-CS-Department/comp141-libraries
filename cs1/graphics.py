@@ -321,7 +321,7 @@ def draw_string(message, x, y, textSize):
 
 @rate_limit
 def save_canvas_as_image(filename):
-  """Saves the image to the supplied filename, which must end in .ps or .eps"""
+  """Saves the image to the supplied filename, which must end in .png"""
   global _canvas
   _check()
   _canvas.to_file(filename)
