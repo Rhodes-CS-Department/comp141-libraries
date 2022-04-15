@@ -20,11 +20,18 @@ from ipycanvas import MultiCanvas
 
 # If true, print/log/display debug information.
 # False should be the distributed default.
-_DEBUG = False
+_DEBUG = True
 
 # Rate limiting for drawing calls
 
 def _bound(v, s, l):
+  """Bound a value from below and above.
+  
+  Args:
+    v: value to bound
+    s: lower bound
+    l: upper bound
+  """
   return min(max(v, s), l)
 
 def _now_millis():
@@ -32,12 +39,14 @@ def _now_millis():
 
 class Limiter:
   """Rate limiter."""
-  def __init__(self, limit=1000, period=1000):
+  def __init__(self, limit=50, period=500):
     """Initialize limiter.
 
     Args:
         limit: number of allowed queries per period.
         period: time in milliseconds.
+    
+    Defaults: 1 call per 10ms with 50 calls in flight.
     """
     self._limit = limit
     self._rate = limit / period # float rate per millisecond
@@ -62,8 +71,11 @@ class Limiter:
     return False
 
 _limiter = Limiter()
-_BACKOFF_SLEEP_SECS = 0.2
-_limited_count = 0
+_BACKOFF_SLEEP_SECS = 0.2 # 200ms
+
+_HARD_LIMIT = False
+_MAX_LIMITED = 20 # Fail if rate limited > 20 times and _HARD_LIMIT is set. 
+_limited_count = 0 # Counter for rate limiting.
 
 def rate_limit(f):
   """Decorator to rate limit f."""
@@ -74,7 +86,7 @@ def rate_limit(f):
       if _DEBUG:
         print('rate limited...')
       _limited_count += 1
-      if _limited_count > 10:
+      if _HARD_LIMIT and _limited_count > _MAX_LIMITED:
         _limited_count = 0
         raise RuntimeError("Too many graphics calls too frequently! Do you have an infinite loop?")
       sleep(_BACKOFF_SLEEP_SECS)
@@ -162,8 +174,8 @@ def get_canvas():
 @rate_limit
 def clear_canvas():
   """Clears the canvas of all shapes and text."""
-  _check()
   global _fg
+  _check()
   _fg.clear()
 
 def set_line_thickness(thickness):
