@@ -20,7 +20,7 @@ from ipycanvas import MultiCanvas
 
 # If true, print/log/display debug information.
 # False should be the distributed default.
-_DEBUG = True
+_DEBUG = False
 
 # Rate limiting for drawing calls
 
