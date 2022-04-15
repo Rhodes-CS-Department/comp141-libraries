@@ -73,7 +73,7 @@ class Limiter:
 _limiter = Limiter()
 _BACKOFF_SLEEP_SECS = 0.2 # 200ms
 
-_HARD_LIMIT = False
+_HARD_LIMIT = True
 _MAX_LIMITED = 20 # Fail if rate limited > 20 times and _HARD_LIMIT is set. 
 _limited_count = 0 # Counter for rate limiting.
 
