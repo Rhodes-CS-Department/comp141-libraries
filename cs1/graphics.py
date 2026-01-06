@@ -39,7 +39,7 @@ def _now_millis():
 
 class Limiter:
   """Rate limiter."""
-  def __init__(self, limit=50, period=500):
+  def __init__(self, limit=500, period=500):
     """Initialize limiter.
 
     Args:
@@ -73,7 +73,7 @@ class Limiter:
 _limiter = Limiter()
 _BACKOFF_SLEEP_SECS = 0.2 # 200ms
 
-_HARD_LIMIT = True
+_HARD_LIMIT = False
 _MAX_LIMITED = 20 # Fail if rate limited > 20 times and _HARD_LIMIT is set. 
 _limited_count = 0 # Counter for rate limiting.
 
@@ -317,6 +317,7 @@ def draw_string(message, x, y, textSize):
   global _fg
   _check()
   _fg.font = '%dpx serif' % textSize
+  _fg.text_align = "center"
   _fg.fill_text(message, x, y)
 
 @rate_limit
