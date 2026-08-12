@@ -113,7 +113,7 @@ def _force_login(okfile, ignore_cache, ok_force, ok_inline):
     global _ok
     _ok = None
     _validate_or_create(okfile, ignore_cache)
-    _ok = Notebook(okfile)
+    _ok = Notebook(okfile, mode='jupyterlab')
     _ok.auth(inline=ok_inline, force=ok_force)
 
 def ok_login(okfile, ignore_cache=False, ok_force=False, ok_inline=True):
