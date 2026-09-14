@@ -128,8 +128,7 @@ def _require_nonneg(value, name, advice):
   """
   if value < 0:
     raise ValueError(
-        "%s cannot be negative (got %s). %s If you are computing it, check "
-        "for a subtraction that came out backwards." % (name, value, advice))
+        "%s cannot be negative (got %s). %s" % (name, value, advice))
 
 def _handle_event(event):
   global _click_coords, _last_mouse_ts
