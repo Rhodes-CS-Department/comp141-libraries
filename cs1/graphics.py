@@ -93,6 +93,14 @@ def rate_limit(f):
     return f(*args, **kwargs)
   return maybe_delay
 
+# ipycanvas has silent browser-based errors on some negative arguments,
+# so this function will catch them.
+def _require_nonneg(value, name):
+  if value < 0:
+    raise ValueError(
+      "%s cannot be negative (got %s). A circle or oval needs a "
+      "radius of 0 or more." % (name, value))
+
 # Canvas; foreground and background layers.
 _canvas = None
 _fg = None
@@ -210,6 +218,7 @@ def draw_circle(centerx, centery, radius):
   """Draws a circle on the canvas."""
   global _fg
   _check()
+  _require_nonneg(radius, 'radius')
   _fg.stroke_circle(centerx, centery, radius)
 
 @rate_limit
