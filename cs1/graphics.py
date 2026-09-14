@@ -114,6 +114,23 @@ def _check():
   if _canvas == None:
     raise RuntimeError("Canvas is not open yet.")
 
+def _require_nonneg(value, name, advice):
+  """Raises an error if a size argument is negative.
+
+  Negative sizes make the browser's canvas throw an exception, which silently
+  discards the rest of the drawing commands and can leave the canvas unusable.
+  Checking here gives an ordinary traceback on the caller's own line instead.
+
+  Args:
+    value: number to check
+    name: parameter name, used in the message
+    advice: short explanation of what the parameter means
+  """
+  if value < 0:
+    raise ValueError(
+        "%s cannot be negative (got %s). %s If you are computing it, check "
+        "for a subtraction that came out backwards." % (name, value, advice))
+
 def _handle_event(event):
   global _click_coords, _last_mouse_ts
   typ = event['type']
@@ -182,6 +199,7 @@ def set_line_thickness(thickness):
   """Sets the canvas painting line width to the value given."""
   global _fg
   _check()
+  _require_nonneg(thickness, 'thickness', 'Lines need a thickness of 0 or more.')
   _fg.line_width = thickness
 
 def set_color(color):
@@ -210,6 +228,7 @@ def draw_circle(centerx, centery, radius):
   """Draws a circle on the canvas."""
   global _fg
   _check()
+  _require_nonneg(radius, 'radius', 'A circle needs a radius of 0 or more.')
   _fg.stroke_circle(centerx, centery, radius)
 
 @rate_limit
@@ -217,6 +236,7 @@ def draw_filled_circle(centerx, centery, radius):
   """Draws a filled circle on the canvas."""
   global _fg
   _check()
+  _require_nonneg(radius, 'radius', 'A circle needs a radius of 0 or more.')
   _fg.fill_circle(centerx, centery, radius)
 
 @rate_limit
@@ -224,6 +244,8 @@ def draw_oval(centerx, centery, radiusx, radiusy):
   """Draws an oval on the canvas."""
   global _fg
   _check()
+  _require_nonneg(radiusx, 'radiusx', 'An oval needs radii of 0 or more.')
+  _require_nonneg(radiusy, 'radiusy', 'An oval needs radii of 0 or more.')
   _fg.begin_path()
   _fg.ellipse(centerx, centery, radiusx, radiusy, 0, 0, 360)
   _fg.stroke()
@@ -234,6 +256,8 @@ def draw_filled_oval(centerx, centery, radiusx, radiusy):
   """Draws a filled oval on the canvas."""
   global _fg
   _check()
+  _require_nonneg(radiusx, 'radiusx', 'An oval needs radii of 0 or more.')
+  _require_nonneg(radiusy, 'radiusy', 'An oval needs radii of 0 or more.')
   _fg.begin_path()
   _fg.ellipse(centerx, centery, radiusx, radiusy, 0, 0, 360)
   _fg.fill()
@@ -316,6 +340,7 @@ def draw_string(message, x, y, textSize):
   midpoint of the string ends up] with the given font size in points."""
   global _fg
   _check()
+  _require_nonneg(textSize, 'textSize', 'Text needs a size of 0 or more.')
   _fg.font = '%dpx serif' % textSize
   _fg.text_align = "center"
   _fg.fill_text(message, x, y)
